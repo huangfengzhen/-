@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+<head>
+	<style>
+	.head_kuang{width:1210px; margin:auto;}
+	.kuang_1{ width:100%; height:132px; background-color:#333333; z-index:99999;}
+	.txt_1{ font-family:黑体; font-size:30px; color:#ff6600; line-height:80px;}
+	.txt_2{ font-family:微软雅黑; font-size:18px; color:#ffffff;}
+	
+	
+	
+    .arrow_up {
+	position: fixed;
+	bottom: 100px;
+	right: 50px;
+	width: 90px;
+	height: 90px;
+	z-index: 9999;
+	
+ _right:expression(eval(document.documentElement.scrollright+1000));
+ _top:expression(eval(document.documentElement.scrollTop+700));
+}
+    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+	<title>作品展示</title>
+	<link rel="stylesheet" type="text/css" href="style/base.css">
+	<link rel="stylesheet" type="text/css" href="style/index.css">
+	<!--[if lt IE 9]>
+		<script src="js/css3-mediaqueries.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="js/jQueryColor.js"></script>
+	<!--这个插件是瀑布流主插件函数必须-->
+	<script type="text/javascript" src="js/jquery.masonry.min.js"></script>
+	<!--这个插件只是为了扩展jquery的animate函数动态效果可有可无-->
+	<script type="text/javascript" src="js/jQeasing.js"></script>
+	<script type="text/javascript">
+	/*
+		抛开瀑布流布局各种乱七八糟的算法，基于masonry的瀑布流，很是简单的，而且通过扩展animate,能实现瀑布流布局的晃动、弹球等效果。
+		masonry还有很多参数我这里注解了常用的参数
+	 */
+		$(function(){
+				/*瀑布流开始*/
+				var container = $('.waterfull ul');
+				var loading=$('#imloading');
+				// 初始化loading状态
+				loading.data("on",true);
+				/*判断瀑布流最大布局宽度，最大为1280*/
+				function tores(){
+					var tmpWid=$(window).width();
+					if(tmpWid>1280){
+						tmpWid=1280;
+					}else{
+						var column=Math.floor(tmpWid/320);
+						tmpWid=column*320;
+					}
+					$('.waterfull').width(tmpWid);
+				}
+				tores();
+				$(window).resize(function(){
+					tores();
+				});
+				container.imagesLoaded(function(){
+				  container.masonry({
+				  	columnWidth: 320,
+				    itemSelector : '.item',
+				    isFitWidth: true,//是否根据浏览器窗口大小自动适应默认false
+				    isAnimated: true,//是否采用jquery动画进行重拍版
+				    isRTL:false,//设置布局的排列方式，即：定位砖块时，是从左向右排列还是从右向左排列。默认值为false，即从左向右
+				    isResizable: true,//是否自动布局默认true
+				    animationOptions: {
+						duration: 800,
+						easing: 'easeInOutBack',//如果你引用了jQeasing这里就可以添加对应的动态动画效果，如果没引用删除这行，默认是匀速变化
+						queue: false//是否队列，从一点填充瀑布流
+					}
+				  });
+				});
+				/*模拟从后台获取到的数据*/
+				var sqlJson=[{'title':'骏达车技','intro':'三亚骏达车技表演馆与毕扎诺梦幻车队倾情合作,联手打造,深度包装一台国际顶级，国内唯一，时尚刺激、震撼惊险，超高品位的...','src':'images/one.jpg','writer':'南潮嘉音','date':'2小时前','looked':321},{'title':'三亚游艇会','intro':'这将是国际旅游岛建设三年来最为宏大的一场盛宴，集萃了超过300个世界顶级品牌的财富舞台，吸引了全球近千名精英富豪的名流派对，游艇...','src':'images/demo2.jpg','writer':'南潮嘉音','date':'2小时前','looked':321},{'title':'三亚英朗汽车发布会','intro':'2015海南南部汽车交易会在三亚湾红树林度假世界国际会展中心隆重举行。三亚安骅别克携全系车型亮相本届三亚车展...','src':'images/p1.jpg','writer':'南潮嘉音','date':'2小时前','looked':321},{'title':'小鱼温泉相约中秋','intro':'小鱼温泉水属碳氢钠泉，是温泉中的极品，其水中富含稀有元素氡，又称“氡泉”。对面风湿类风湿性关节炎、 皮肤病、伤风感冒以及美容美白、光洁皮肤有奇效...','src':'images/p2.jpg','writer':'南潮嘉音','date':'2小时前','looked':321}];
+				/*本应该通过ajax从后台请求过来类似sqljson的数据然后，便利，进行填充，这里我们用sqlJson来模拟一下数据*/
+				$(window).scroll(function(){
+					if(!loading.data("on")) return;
+					// 计算所有瀑布流块中距离顶部最大，进而在滚动条滚动时，来进行ajax请求，方法很多这里只列举最简单一种，最易理解一种
+					var itemNum=$('#waterfull').find('.item').length;
+					var itemArr=[];
+					itemArr[0]=$('#waterfull').find('.item').eq(itemNum-1).offset().top+$('#waterfull').find('.item').eq(itemNum-1)[0].offsetHeight;
+					itemArr[1]=$('#waterfull').find('.item').eq(itemNum-2).offset().top+$('#waterfull').find('.item').eq(itemNum-1)[0].offsetHeight;
+					itemArr[2]=$('#waterfull').find('.item').eq(itemNum-3).offset().top+$('#waterfull').find('.item').eq(itemNum-1)[0].offsetHeight;
+					var maxTop=Math.max.apply(null,itemArr);
+					if(maxTop<$(window).height()+$(document).scrollTop()){
+						//加载更多数据
+						loading.data("on",false).fadeIn(800);
+						(function(sqlJson){
+							/*这里会根据后台返回的数据来判断是否你进行分页或者数据加载完毕这里假设大于30就不在加载数据*/
+							if(itemNum>30){
+								loading.text('就有这么多了！');
+							}else{
+								var html="";
+								for(var i in sqlJson){
+									html+="<li class='item'><a href='#' class='a-img'><img src='"+sqlJson[i].src+"'></a>";
+									html+="<h2 class='li-title'>"+sqlJson[i].title+"</h2>";
+									html+="<p class='description'>"+sqlJson[i].intro+"</p><div class='qianm clearfloat'>";
+									html+="<span class='sp1'><b>"+sqlJson[i].looked+"</b>浏览</span>";
+									html+="<span class='sp2'>"+sqlJson[i].writer+"</span><span class='sp3'>"+sqlJson[i].date+"&nbsp;By</span></div></li>";		
+								}
+								/*模拟ajax请求数据时延时800毫秒*/
+								var time=setTimeout(function(){
+									$(html).find('img').each(function(index){
+										loadImage($(this).attr('src'));
+									})
+									var $newElems = $(html).css({ opacity: 0}).appendTo(container);
+									$newElems.imagesLoaded(function(){
+										$newElems.animate({ opacity: 1},800);
+										container.masonry( 'appended', $newElems,true);
+										loading.data("on",true).fadeOut();
+										clearTimeout(time);
+							        });
+								},800)
+							}
+						})(sqlJson);
+					}
+				});
+				function loadImage(url) {
+				     var img = new Image(); 
+				     //创建一个Image对象，实现图片的预下载
+				      img.src = url;
+				      if (img.complete) {
+				         return img.src;
+				      }
+				      img.onload = function () {
+				       	return img.src;
+				      };
+				 };
+				 loadImage('images/one.jpg');
+				/*item hover效果*/
+				var rbgB=['#71D3F5','#F0C179','#F28386','#8BD38B'];
+				$('#waterfull').on('mouseover','.item',function(){
+					var random=Math.floor(Math.random() * 4);
+					$(this).stop(true).animate({'backgroundColor':rbgB[random]},1000);
+				});
+				$('#waterfull').on('mouseout','.item',function(){
+					$(this).stop(true).animate({'backgroundColor':'#fff'},1000);
+				});
+		})
+    </script>
+</head>
+<body>
+
+<div class="kuang_1">
+	<div class="head_kuang">
+        <h1 class="txt_1">作品展示</h1>
+        <h4 class="txt_2">“与众不同的设计理念——创意”</h4>
+    </div>
+</div>
+
+
+
+	<div class="content">
+		<!-- 瀑布流样式开始 -->
+		<div class="waterfull clearfloat" id="waterfull">
+			<ul>
+				<li class="item">
+					<a href="../zpzs_2.html" class="a-img">
+						<img src="images/t8.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="月下拾花·摄">月下拾花·摄</h2>
+					<p class="description">拾花－（朝花夕时，十年之花）―――这是对时间的阅读，同时，也寓意着时间的阅历，带来更加美...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t7.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="会议会展布置">会议会展布置</h2>
+					<p class="description">会展服务是指为保证会议、展览正常进行所提供的全过程（会前、会中、会后）服务，既包括发生在展会现场的租赁、广告、安保...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t9.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="舞台搭建">舞台搭建</h2>
+					<p class="description">舞台大部分都是由钢管支撑架和木板两部分组成，常见的舞台有T型舞台和长方形舞台，在舞台的后面会用桁架挂上幕布...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t3.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="三亚目的地婚纱博览会">三亚目的地婚纱博览会</h2>
+					<p class="description">中国婚博会是全球超大规模并集合世界品牌婚庆产品的婚庆展览会。每年在北京、上海、广州、武汉、天津等地同时举办...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t6.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="圆通快递开业">圆通快递开业</h2>
+					<p class="description">圆通公司致力于开拓和发展国际、国内快递、物流市场。服务涵盖报关、报检、海运、空运进出口货物的运输服务;中转、国际国内的多...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t5.png" alt="">	
+					</a>
+					<h2 class="li-title" title="微信公众平台开发">微信公众平台开发</h2>
+					<p class="description">微信开发即微信公众平台开发，将企业信息、服务、活动等内容通过微信网页的方式进行表现，用户通过简单的设置，就能生成微信3G网站...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t10.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="海天盛筵安保">海天盛筵安保</h2>
+					<p class="description">海天盛筵是一场在海南三亚举办的多方位高端生活方式展。这场一年一度的盛会持续四天，主要包括游艇展、公务机展、房产展以及多种高端生活品牌展示...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+				<li class="item">
+					<a href="#" class="a-img">
+						<img src="images/t2.jpg" alt="">
+						
+					</a>
+					<h2 class="li-title" title="高尔夫”道农杯“">高尔夫”道农杯“</h2>
+					<p class="description">中国企业家高尔夫联队队员来到三亚龙泉谷球场，张醒生、汪潮涌、许小年等30多位联队成员和嘉宾参加。龙泉谷高尔夫球会位于三亚...</p>
+					<div class="qianm clearfloat">
+						<span class="sp1"><b>688</b>浏览</span>
+						<span class="sp2">南潮嘉音</span>
+						<span class="sp3">2小时前&nbsp;By</span>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- loading按钮自己通过样式调整 -->
+		<div id="imloading" style="width:150px;height:30px;line-height:30px;font-size:16px;text-align:center;border-radius:3px;opacity:0.7;background:#000;margin:10px auto 30px;color:#fff;display:none">
+		图片加载中.....
+		</div>
+	</div>
+    
+    
+    
+	<div class="arrow_up" id="arrow_up"> <a href="#"> <img src="images/slide_up.png" width="90px" height="90px" alt="回到顶部" > </a> 
+ </div>
+</body>
+</html>

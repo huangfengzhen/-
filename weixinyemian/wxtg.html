@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<link rel="stylesheet" type="text/css" href="css/wxtg/public.css" />
+<link rel="stylesheet" type="text/css" href="css/wxtg/zsstyle.css" />
+<script src="js/wxtg/jquery-1.7.2.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function() {
+	$(window).resize(function() {
+		imgWH();
+	}).resize();
+	function imgWH() {
+		var i = 0,
+			imgpnglength = $('.imgpng').length;
+		for(i=0; i < imgpnglength; i++) {
+			var imgpng = $('.imgpng').eq(i),
+				imgpngW = imgpng.width(),
+				maximgpngW = imgpng.attr("width");
+			if(imgpngW >=　maximgpngW){
+				imgpng.attr('width', maximgpngW);
+			} else {
+				imgpng.attr('width', imgpngW);
+			}
+		}
+		var imgtopW = $('.imgtop').width(),
+			imgtopH = $('.imgtop').height();
+		$('.gem-back').css({width:imgtopW*0.375,height:imgtopH*0.19,marginTop:imgtopH*0.259});
+	}
+});
+</script>
+</head>
+<body>
+<!-- container -->
+<section id="section1" class="section section1">
+  <article class="sectionWrapper section1Wrapper fadeInDown">
+   
+    <div class="secitonbottombg"> <img src="images/wxtg/fir_bg.jpg" width="1622px" class="imgpng"/> </div>
+    <div class="arrow_down"> <a href="#section2"> <img src="images/wxtg/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  </article>
+</section>
+<section id="section2" class="section section2">
+  <article class="sectionWrapper section2Wrapper">
+    <div class="secitonbottombg"> <img src="images/wxtg/sec_bg.jpg"  width="1000"  akt=""/> </div>
+    <div class="arrow_down"> <a href="#section3"> <img src="images/wxtg/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  </article>
+</section>
+<section id="section3" class="section section3">
+  <article class="sectionWrapper section3Wrapper">
+    <div class="secitonbottombg"> <img src="images/wxtg/thi_bg.jpg"  width="1128" alt=""/> </div>
+    <div class="arrow_down"> <a href="#section4"> <img src="images/wxtg/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  </article>
+</section>
+<section id="section4" class="section section4">
+  <article class="sectionWrapper section4Wrapper">
+    <div class="secitonbottombg"> <img src="images/wxtg/fou_bg.jpg"  width="1128" alt=""/> </div>
+    <div class="arrow_down"> <a href="#section5"> <img src="images/wxtg/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  </article>
+</section>
+<section id="section5" class="section section5">
+  <article class="sectionWrapper section5Wrapper">
+    <div class="secitonbottombg"> <img src="images/wxtg/fif_bg.jpg"  width="668" alt=""/> </div>
+    <div class="arrow_down"> <a href="#section6"> <img src="images/wxtg/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  </article>
+</section>
+<section id="section6" class="section section6">
+  <article class="sectionWrapper section6Wrapper">
+    <div class="secitonbottombg"> <img src="images/wxtg/six_bg.jpg"  width="668" alt=""/> <a href="../lxwm.html" > <img src="images/wxtg/download.png" width="300px" height="105px" alt="立即下载"> </a> </div>
+  </article>
+</section>
+<!--回到顶部-->
+
+<div id="arrow_up" > <a href="#"> <img src="images/wxtg/slide_up.png" width="90px" height="90px" alt="回到顶部" > </a> </div>
+<script type="text/javascript">
+var h=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+$(window).scroll(function(){
+	var Yoffset=window.pageYOffset || document.documentElement.scrollTop;
+	if (Yoffset> 2* h) {  
+		$("#arrow_up").fadeIn(100);
+	}else{
+		$("#arrow_up").fadeOut(100);
+	};
+});
+$("#arrow_up").bind("click",function(e){
+	e.preventDefault();
+	$("body").animate({"scrollTop":"0"},1000);
+		
+});
+</script>  
+<script src="js/wxtg/sectionscroll.js" type="text/javascript"></script> 
+<script src="js/wxtg/jquery.mousewheel.min.js" type="text/javascript"></script>
+
+
+</body>
+</html>
